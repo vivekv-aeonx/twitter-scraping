@@ -16,13 +16,13 @@ subject = "Elon Musk"
 
 sleep(3)
 username = driver.find_element(By.XPATH,"//input[@name='text']")
-username.send_keys("carav2412")
+username.send_keys("YOUR USERNAME")
 next_button = driver.find_element(By.XPATH,"//span[contains(text(),'Next')]")
 next_button.click()
 
 sleep(3)
 password = driver.find_element(By.XPATH,"//input[@name='password']")
-password.send_keys('vajha2002')
+password.send_keys('YOUR PASSWORD')
 log_in = driver.find_element(By.XPATH,"//span[contains(text(),'Log in')]")
 log_in.click()
 
