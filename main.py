@@ -11,7 +11,6 @@ from time import sleep
 driver = webdriver.Chrome()
 driver.get("https://x.com/login")
 
-subject = "Elon Musk"
 
 
 sleep(3)
