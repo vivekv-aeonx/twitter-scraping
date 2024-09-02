@@ -1,0 +1,49 @@
+import time
+from playwright.sync_api import sync_playwright
+import pandas as pd
+
+userNameOfAccount = "narendramodi"   
+Total_scrolls = 20   
+
+link = f"https://x.com/{userNameOfAccount}"
+
+data = []  
+
+def extract_tweet_data(page):
+    tweet_data = []
+    tweets = page.query_selector_all('article')
+    for tweet in tweets:
+        tweet_text = tweet.query_selector('[data-testid="tweetText"]').inner_text() if tweet.query_selector('[data-testid="tweetText"]') else "No text"
+        likes = tweet.query_selector('[data-testid="like"]').inner_text() if tweet.query_selector('[data-testid="like"]') else "0"
+        retweets = tweet.query_selector('[data-testid="retweet"]').inner_text() if tweet.query_selector('[data-testid="retweet"]') else "0"
+        tweet_data.append({
+            'Tweet': tweet_text,
+            'Likes': likes,
+            'Retweets': retweets
+        })
+    return tweet_data
+
+with sync_playwright() as p:
+    browser = p.chromium.launch(headless=True)
+    page = browser.new_page()
+    page.goto(link, timeout=50000)
+    
+    initial_height = 0
+    final_height = 1000
+    for _ in range(Total_scrolls):
+        page.mouse.wheel(0, final_height)
+        initial_height = final_height
+        final_height = final_height + 300
+        time.sleep(4) 
+        
+        
+        data.extend(extract_tweet_data(page))
+
+    browser.close()
+
+
+df = pd.DataFrame(data)
+df.drop_duplicates(inplace=True)  
+df.to_csv('output.csv', index=False)
+
+print("Data scraping completed and saved to output.csv")
