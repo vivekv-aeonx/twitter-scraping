@@ -11,7 +11,7 @@ from time import sleep
 driver = webdriver.Chrome()
 driver.get("https://x.com/login")
 
-
+subject= 'Elon Musk'
 
 sleep(3)
 username = driver.find_element(By.XPATH,"//input[@name='text']")
